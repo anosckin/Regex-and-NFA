@@ -1,7 +1,7 @@
 # 
 
 # Description
-## Build
+## Build 
 Build takes a regular expression (standard input)
 
 - concatenation is written with no operator between symbols ab or bc. (NOT a.b)
@@ -42,5 +42,20 @@ Output (one of the acceptable outputs)
 0 1
 3 a 0 b 0 c 1
 0
+```
+
+Run sample test
+Input:
+```
+abbc1acabbbbc001cabc
+3 2 6
+0 2
+1 a 1
+2 b 1 c 2
+3 0 2 1 2 a 1
+```
+Output
+```
+NNNYYNYNNNNNYYYYNNNN
 ```
 
