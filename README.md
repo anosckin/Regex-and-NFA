@@ -17,5 +17,13 @@ the code outputs (standard output) the NFA whos language is given regex
 output follows given pattern
 number of states, number of accept states, number of edges
 list of accept states
+after these lines we output the NFA as a graph,
+on *i*th line we output the number of edges exiting state numbered *i* (lets call this number *k*). after that come *k* pairs. first element of the pair is the character with which the step is made, the second is the number of the state at the end of the edge.
 
-for the next *i* lines, on the *i*th line we print k[i] and k[i]
+## Run
+Takes a string and a NFA, NFA is formated as described above (standard input)
+
+code prints a string consisting of 'Y' and 'N'. (lets call this string *s*)
+s[i] is 'Y' if after reading characters s[0]..s[i] the NFA is in an accept state, and 'N' if it is not.
+
+
