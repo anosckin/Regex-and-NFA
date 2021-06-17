@@ -1,4 +1,5 @@
-# Build
+# Usage
+## Build
 Build takes a regular expression (standard input)
 
 - concatenation is written with no operator between symbols ab or bc. (NOT a.b)
@@ -17,4 +18,4 @@ output follows given pattern
 number of states, number of accept states, number of edges
 list of accept states
 
-for the next *i* lines, on the *i*th line we print k\index i
+for the next *i* lines, on the *i*th line we print k[i] and k[i]
