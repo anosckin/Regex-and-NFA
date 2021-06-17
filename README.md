@@ -4,7 +4,7 @@ Build takes a regular expression (standard input)
 
 - concatenation is written with no operator between symbols ab or bc. (NOT a.b)
 - union is wirtten with '|'  (ex. a|b)
-- star operation is written with '*' (ex. a*)
+- star operation is written with '\*' (ex. a\*)
 - symbols are lowercase latin letters or digits 'a'-'z' '0'-'9'
 - parentheses are allowed
 - empty strings do not have symbols but can be written as ()
