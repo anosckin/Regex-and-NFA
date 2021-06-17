@@ -1,4 +1,6 @@
-# Usage
+# 
+
+# Description
 ## Build
 Build takes a regular expression (standard input)
 
@@ -26,4 +28,5 @@ Takes a string and a NFA, NFA is formated as described above (standard input)
 code prints a string consisting of 'Y' and 'N'. (lets call this string *s*)
 s[i] is 'Y' if after reading characters s[0]..s[i] the NFA is in an accept state, and 'N' if it is not.
 
-
+# Usage
+On Windows just run build.exe for Build and run run.exe for Run
