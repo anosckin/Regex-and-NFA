@@ -12,5 +12,9 @@ the code outputs (standard output) the NFA whos language is given regex
 - number of states is less than or equal to the length of the given string + 1
 - start state is always 0
 - nodes are numbered from 0
+
 output follows given pattern
-number of states      number of accept states      number of edges
+number of states, number of accept states, number of edges
+list of accept states
+
+for the next *i* lines, on the *i*th line we print k\index i
