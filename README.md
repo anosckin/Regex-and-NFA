@@ -1,7 +1,7 @@
 # 
 
 # Description
-## Build 
+## Build-NFA
 Build takes a regular expression (standard input)
 
 - concatenation is written with no operator between symbols ab or bc. (NOT a.b)
@@ -22,16 +22,16 @@ list of accept states
 after these lines we output the NFA as a graph,
 on *i*-th line we output the number of edges exiting state numbered *i* (lets call this number *k*). after that come *k* pairs. first element of the pair is the character with which the step is made, the second is the number of the state at the end of the edge.
 
-## Run
+## Run-NFA
 Takes a string and a NFA, NFA is formated as described above (standard input)
 
 code prints a string consisting of 'Y' and 'N'. (lets call this string *s*)
 s[i] is 'Y' if after reading characters s[0]..s[i] the NFA is in an accept state, and 'N' if it is not.
 
 # Usage
-On Windows just run build.exe for Build and run run.exe for Run
+On Windows just run build-NFA.exe for Build-NFA and run run-NFA.exe for Run-NFA
 
-Build sample test
+Build-NFA sample test
 Input:
 ```
 (a|b)*(c|())
@@ -44,7 +44,7 @@ Output (one of the acceptable outputs)
 0
 ```
 
-Run sample test
+Run-NFA sample test
 Input:
 ```
 abbc1acabbbbc001cabc
