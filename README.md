@@ -30,3 +30,17 @@ s[i] is 'Y' if after reading characters s[0]..s[i] the NFA is in an accept state
 
 # Usage
 On Windows just run build.exe for Build and run run.exe for Run
+
+Build sample test
+Input:
+'''
+(a|b)*(c|())
+'''
+Output (one of the acceptable outputs)
+'''
+2 2 3
+0 1
+3 a 0 b 0 c 1
+0
+'''
+
