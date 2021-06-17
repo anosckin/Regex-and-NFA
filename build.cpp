@@ -10,7 +10,7 @@
 #define all(x) (x).begin(),(x).end()
 #define deb(x) cout << #x << " " << x << endl
 using namespace std;
-const int MAX_SIZE = 10000000;
+const int MAX_SIZE = 10000;
 const int DEBUG = false;
 struct Relation{
 	int u,v;
@@ -47,84 +47,54 @@ NFA NFA_init (int start,int accept_state,char R){
 	return temp;
 }
 
-NFA NFA_star(NFA a){
-	NFA temp;
+void NFA_star(NFA &a){
 	++number_of_states;
-	temp.start.pb(number_of_states);
-    
-	for (int i=0;i<a.relations.size();i++){
-		temp.relations.pb(a.relations[i]);
-	}
 	
 	for (int i=0;i<a.accept_states.size();i++){
-		temp.accept_states.pb(a.accept_states[i]);
-	}
-	
-	for (int i=0;i<temp.accept_states.size();i++){
-		temp.relations.pb(R_init(temp.accept_states[i],number_of_states,'@')); // @ constitutes an epsilon
+		a.relations.pb(R_init(a.accept_states[i],number_of_states,'@')); // @ constitutes an epsilon
 	}
 	for (int i=0;i<a.start.size();i++){
-		temp.relations.pb(R_init(number_of_states,a.start[i],'@')); // @ constitutes an epsilon
+		a.relations.pb(R_init(number_of_states,a.start[i],'@')); // @ constitutes an epsilon
 	}
 	
-    temp.accept_states.pb(number_of_states);
-    
-	return temp;
+	a.start.clear();
+	a.start.pb(number_of_states);
+	
+    a.accept_states.pb(number_of_states);
 }
 
-NFA NFA_concat(NFA a,NFA b){
-	NFA temp;
-	for (int i=0;i<a.start.size();i++){	
-     	temp.start.pb(a.start[i]);
-    }
-    
-	for (int i=0;i<b.accept_states.size();i++){
-		temp.accept_states.pb(b.accept_states[i]);
-	}
-	
-	for (int i=0;i<a.relations.size();i++){
-		temp.relations.pb(a.relations[i]);
-	}
-	for (int i=0;i<b.relations.size();i++){
-		temp.relations.pb(b.relations[i]);
-	}
-	
+void NFA_concat(NFA& a,NFA& b){
 	for (int i=0;i<a.accept_states.size();i++){
 		for (int j=0;j<b.start.size();j++){
-			temp.relations.pb(R_init(a.accept_states[i],b.start[j],'@')); // @ constitues an epsilon
+			a.relations.pb(R_init(a.accept_states[i],b.start[j],'@')); // @ constitues an epsilon
 	    }
 	}
 	
-	return temp;
+    a.accept_states.clear();
+    
+	for (int i=0;i<b.accept_states.size();i++){
+		a.accept_states.pb(b.accept_states[i]);
+	}
+	
+	for (int i=0;i<b.relations.size();i++){
+		a.relations.pb(b.relations[i]);
+	}
+	
 }
 
-NFA NFA_union(NFA a,NFA b){
-	NFA temp;
-	
-	for (int i=0;i<a.start.size();i++){	
-     	temp.start.pb(a.start[i]);
-    }
+void NFA_union(NFA &a,NFA &b){
     
 	for (int i=0;i<b.start.size();i++){	
-     	temp.start.pb(b.start[i]);
+     	a.start.pb(b.start[i]);
     }
     
-	for (int i=0;i<a.accept_states.size();i++){
-		temp.accept_states.pb(a.accept_states[i]);
-	}
-	
 	for (int i=0;i<b.accept_states.size();i++){
-		temp.accept_states.pb(b.accept_states[i]);
+		a.accept_states.pb(b.accept_states[i]);
 	}
 	
-	for (int i=0;i<a.relations.size();i++){
-		temp.relations.pb(a.relations[i]);
-	}
 	for (int i=0;i<b.relations.size();i++){
-		temp.relations.pb(b.relations[i]);
+		a.relations.pb(b.relations[i]);
 	}
-	
-	return temp;
 }
 
 
@@ -132,6 +102,7 @@ NFA NFA_union(NFA a,NFA b){
 bool check_symbol (char c){
 	return (('0'<=c and c<='9') or ('a'<=c and c<='z') or c=='@');
 }
+
 // adds '@' where there is epsilon implied
 void add_epsilon(string &s){
 	for (int i=1;i<s.size();i++){
@@ -140,6 +111,7 @@ void add_epsilon(string &s){
 		}
 	}
 }
+
 // adds '.' wher concat is implied
 void add_concats(string &s){
 	for (int i=1;i<s.size();i++){
@@ -150,6 +122,7 @@ void add_concats(string &s){
 		}
 	}
 }
+
 //converts string which is in infix to postfix
 void string_to_postfix(string &s){
 	vector <char> postfix;
@@ -196,6 +169,7 @@ void string_to_postfix(string &s){
 	
 	s=ans;
 }
+
 //gets string ready for converting to NFA
 void get_string_ready(string &s){
 	add_epsilon(s);
@@ -207,58 +181,40 @@ void get_string_ready(string &s){
 		}
 	}
 }
+
 //converts string to working NFA and returns it
 NFA convert_to_NFA (string &s){
-	stack <NFA> st;
+	vector <NFA> v;
 	for (int i=0;i<s.size();i++){
 		if (check_symbol(s[i])){
-			st.push(automata[i]); 
-			//print_NFA(automata[i]);
-			//pause;
+			v.pb(automata[i]); 
 		}else{
-			//deb(s[i]);
-			NFA cur,cur1,cur2;
 			if (s[i]=='.'){
-				cur1 = st.top();
-				st.pop();
-				cur2 = st.top();
-				st.pop();
-				cur = NFA_concat(cur2,cur1); // the order is important
-				st.push(cur);
-				//print_NFA(cur);
-				//pause;
+				int last_elem=v.size()-1;
+				NFA_concat(v[last_elem-1],v[last_elem]); // the order is important
+				v.pop_back();
 			}
 			if (s[i]=='|'){
-				cur1 = st.top();
-				st.pop();
-				cur2 = st.top();
-				st.pop();
-				cur = NFA_union(cur1,cur2);
-				st.push(cur);
-				//print_NFA(cur);
-				//pause;
+				int last_elem=v.size()-1;
+				NFA_union(v[last_elem-1],v[last_elem]);
+				v.pop_back();
 			}
 			if (s[i]=='*'){
-				cur = st.top();
-				st.pop();
-				cur = NFA_star(cur);
-				st.push(cur);
-				//print_NFA(cur);
-				//pause;
+				int last_elem=v.size()-1;
+				NFA_star(v[last_elem]);
 			}
 		}
 	}
-	NFA cur = st.top();
-	for (int i=0;i<cur.start.size();i++){
-		cur.relations.pb(R_init(0,cur.start[i],'@'));
+	for (int i=0;i<v.back().start.size();i++){
+		v.back().relations.pb(R_init(0,v.back().start[i],'@'));
 	}
 	
-	cur.start.clear();
-	cur.start.pb(0);
+	v.back().start.clear();
+	v.back().start.pb(0);
 	
-	return cur;
+	return v.back();
 }
-//pritns every NFA info
+//prints every NFA info
 void print_NFA(NFA answer,bool adj_ok){
 	if (!DEBUG) return;
 	cout<<"START: "<<endl;
@@ -288,7 +244,7 @@ void print_NFA(NFA answer,bool adj_ok){
 }
 
 //creates adj vector and fills array acceptalbe_states
-void create_adj_vector (NFA answer){
+void create_adj_vector (NFA &answer){
 	for (int i=0;i<=number_of_states;i++){
 		adj[i].clear();
 	}
@@ -311,17 +267,18 @@ void go (int u){
 	}
 }
 
+
 void remove_epsilons (NFA &answer){
 	vector <Relation> eps;
 	
-	//pause;
-	for (int e=0;e<=number_of_states;e++){
+	for (int e=0;e<=log2(number_of_states)+1;e++){
 		eps.clear();
 		for (int e=0;e<=number_of_states;e++){
 			for (int i=0;i<adj[e].size();i++){
 				if (adj[e][i].s=='@') eps.pb(R_init(e,adj[e][i].f,'@'));
 			}	
 		}
+		
 		for (auto road:eps){
 			vector <pair<int,char> > tempor;
 			tempor.clear();
@@ -345,12 +302,13 @@ void remove_epsilons (NFA &answer){
 			
 		}	
 	}
-	//pause;
+	
 	for (int e=0;e<=number_of_states;e++){
 		for (int i=0;i<adj[e].size();i++){
 			if (adj[e][i].s!='@') short_adj[e].pb(adj[e][i]);
 		}	
 	}
+	
 	answer.accept_states.clear();
 	for (int i=0;i<=number_of_states;i++){
 		if (accpetable_states[i]==1){
@@ -385,10 +343,11 @@ void shorten_NFA(NFA &answer){
 				i--;
 			}
 		}
-	}
-	
+	}	
 }
+
 map <int,int> mp;
+
 void print_answer(NFA &answer){
 	
 	int n=0,m=0;
@@ -422,19 +381,16 @@ void print_answer(NFA &answer){
 }
 
 int main () {
+	ios::sync_with_stdio(0);
 	string s;
 	cin>>s;
 	get_string_ready(s);
-	//deb(s);
 	NFA answer=convert_to_NFA(s);
 	create_adj_vector (answer);
 	remove_epsilons(answer);
-	//pause;
 	shorten_NFA(answer);
-	//print_NFA(answer,true);
 	print_answer(answer);
 }
-// (l10)((an3n|yj|ca8|n)*)
 
 
 
