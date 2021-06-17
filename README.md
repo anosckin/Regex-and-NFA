@@ -9,7 +9,7 @@ Build takes a regular expression (standard input)
 - parentheses are allowed
 - empty strings do not have symbols but can be written as ()
 
-the code outputs (standard output) the NFA whos language is given regex 
+the code outputs (standard output) the NFA whos language is the given regex 
 - number of states is less than or equal to the length of the given string + 1
 - start state is always 0
 - nodes are numbered from 0
