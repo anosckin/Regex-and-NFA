@@ -390,6 +390,7 @@ int main () {
 	remove_epsilons(answer);
 	shorten_NFA(answer);
 	print_answer(answer);
+	pause;
 }
 
 

@@ -10,22 +10,16 @@
 #define all(x) (x).begin(),(x).end()
 #define deb(x) cout << #x << " " << x << endl
 using namespace std;
-const int MAX_SIZE = 10000000;
+const int MAX_SIZE = 10000;
 string s;
 vector <pair<int,char> > adj[MAX_SIZE];
 bool accept[MAX_SIZE];
 vector <int> cur_states;
 vector <int> temp;
 char ans[MAX_SIZE];
-
 void solve (string &s){
 	cur_states.pb(0);
 	for (int w=0;w<s.size();w++){
-//		cout<<"i: "<<i<<endl;
-//		for (int i=0;i<cur_states.size();i++){
-//			cout<<cur_states[i]<<" ";
-//		}
-//		cout<<endl;
 		for (int i=0;i<cur_states.size();i++){
 			int u=cur_states[i];
 			for (int j=0;j<adj[u].size();j++){
@@ -41,12 +35,6 @@ void solve (string &s){
 		}
 	
 		temp.clear();
-//		
-//		cout<<"i: "<<i<<endl;
-//		for (int i=0;i<cur_states.size();i++){
-//			cout<<cur_states[i]<<" ";
-//		}
-//		cout<<endl;
 		ans[w]='N';
 		for (int i=0;i<cur_states.size();i++){
 			if (accept[cur_states[i]]) ans[w]='Y';
@@ -78,5 +66,6 @@ main () {
 		cout<<ans[i];
 	}
 	cout<<endl;
+	pause;
 }
 
