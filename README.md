@@ -40,6 +40,7 @@ run build-NFA.exe for Build-NFA and run run-NFA.exe for Run-NFA
 ## Linux
 TBD
 
+## Small samples
 Build-NFA sample test
 Input:
 ```
