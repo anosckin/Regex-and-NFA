@@ -1,4 +1,8 @@
-# 
+# Regex to NFA & NFA simulation
+Build-NFA -> converts regex to a NFA
+Run-NFA -> runs a simulation on a NFA with the given string
+
+## Details
 
 # Description
 ## Build-NFA
@@ -29,7 +33,12 @@ code prints a string consisting of 'Y' and 'N'. (lets call this string *s*)
 s[i] is 'Y' if after reading characters s[0]..s[i] the NFA is in an accept state, and 'N' if it is not.
 
 # Usage
-On Windows just run build-NFA.exe for Build-NFA and run run-NFA.exe for Run-NFA
+
+## Windows
+run build-NFA.exe for Build-NFA and run run-NFA.exe for Run-NFA
+
+## Linux
+TBD
 
 Build-NFA sample test
 Input:
