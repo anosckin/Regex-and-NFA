@@ -1,5 +1,6 @@
 # Regex to NFA & NFA simulation
 Build-NFA -> converts regex to a NFA
+
 Run-NFA -> runs a simulation on a NFA with the given string
 
 ## Details
